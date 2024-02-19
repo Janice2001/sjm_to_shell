@@ -1,0 +1,120 @@
+#
+# The demo follows a commonly used workflow in bioinformatics.
+#
+
+job_begin
+name qc_s1
+memory 300G
+cmd sh /1/Dev/Demo/s1/clean.sh
+job_end
+
+job_begin
+name umitag_s1
+memory 50G
+cmd sh /2/Dev/Demo/s1/umitag_P.sh
+cmd sh /2/Dev/Demo/s1/umitag_N.sh
+job_end
+
+job_begin
+name consolidate_r1_s1
+memory 50G
+cmd sh /3/Dev/Demo/s1/consolidate_r1.sh
+job_end
+
+job_begin
+name consolidate_r2_s1
+memory 50G
+cmd sh /3/Dev/Demo/s1/consolidate_r2.sh
+job_end
+
+job_begin
+name merge_s1
+memory 50G
+cmd sh /4/Dev/Demo/s1/merge.sh
+job_end
+
+job_begin
+name align_s1
+memory 50G
+cmd sh /5/Dev/Demo/s1/align.sh
+job_end
+
+job_begin
+name qc_s2
+memory 300G
+cmd sh /1/Dev/Demo/s2/clean.sh
+job_end
+
+job_begin
+name umitag_s2
+memory 50G
+cmd sh /2/Dev/Demo/s2/umitag_P.sh
+cmd sh /2/Dev/Demo/s2/umitag_N.sh
+job_end
+
+job_begin
+name consolidate_r1_s2
+memory 50G
+cmd sh /3/Dev/Demo/s2/consolidate_r1.sh
+job_end
+
+job_begin
+name consolidate_r2_s2
+memory 50G
+cmd sh /3/Dev/Demo/s2/consolidate_r2.sh
+job_end
+
+job_begin
+name merge_s2
+memory 50G
+cmd sh /4/Dev/Demo/s2/merge.sh
+job_end
+
+job_begin
+name align_s2
+memory 50G
+cmd sh /5/Dev/Demo/s2/align.sh
+job_end
+
+job_begin
+name identify_experiment
+memory 50G
+cmd sh /6/Dev/Demo/identify_ex.sh
+job_end
+
+job_begin
+name identify_control
+memory 50G
+cmd sh /6/Dev/Demo/identify_cl.sh
+job_end
+
+job_begin
+name identify_commen
+memory 50G
+cmd sh /7/Dev/Demo/identify_cn.sh
+job_end
+
+job_begin
+name visualization
+memory 50G
+cmd sh /8/Dev/Demo/visualization.sh
+job_end
+
+
+order umitag_s1 after qc_s1
+order consolidate_r1_s1 after umitag_s1
+order consolidate_r2_s1 after umitag_s1
+order merge_s1 after consolidate_r1_s1
+order merge_s1 after consolidate_r2_s1
+order align_s1 after merge_s1
+order umitag_s2 after qc_s2
+order consolidate_r1_s2 after umitag_s2
+order consolidate_r2_s2 after umitag_s2
+order merge_s2 after consolidate_r1_s2
+order merge_s2 after consolidate_r2_s2
+order align_s2 after merge_s2
+order align_s1 before identify_experiment
+order align_s2 before identify_control
+order identify_commen after identify_experiment
+order identify_commen after identify_control
+order identify_commen before visualization
